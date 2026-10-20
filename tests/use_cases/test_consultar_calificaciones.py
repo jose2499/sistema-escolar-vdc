@@ -1,7 +1,7 @@
 import pytest
-from escolar.use_cases.consultar_calificaciones import ConsultarCalificaciones
 
 from escolar.domain.errors import EntidadNoEncontrada, PermisoDenegado
+from escolar.use_cases.consultar_calificaciones import ConsultarCalificaciones
 from escolar.use_cases.registrar_calificacion import RegistrarCalificacion
 
 
