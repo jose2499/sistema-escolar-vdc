@@ -55,3 +55,17 @@ def repo_calificaciones():
     from escolar.infrastructure.repositorios_memoria import RepositorioCalificacionesMemoria
 
     return RepositorioCalificacionesMemoria()
+
+
+@pytest.fixture
+def repo_asistencia():
+    from escolar.infrastructure.repositorios_memoria import RepositorioAsistenciaMemoria
+
+    return RepositorioAsistenciaMemoria()
+
+
+@pytest.fixture
+def reloj():
+    from datetime import date
+
+    return lambda: date(2026, 10, 20)
