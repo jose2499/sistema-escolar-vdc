@@ -47,3 +47,17 @@ class RepositorioCalificacionesMemoria:
 
     def listar(self):
         return list(self._por_clave.values())
+
+
+class RepositorioAsistenciaMemoria:
+    def __init__(self):
+        self._por_clave = {}
+
+    def existe(self, estudiante_id, fecha):
+        return (estudiante_id, fecha) in self._por_clave
+
+    def guardar(self, asistencia):
+        self._por_clave[(asistencia.estudiante_id, asistencia.fecha)] = asistencia
+
+    def listar_por_estudiante(self, estudiante_id):
+        return [a for (eid, _), a in self._por_clave.items() if eid == estudiante_id]
