@@ -24,3 +24,11 @@ class PermisoDenegado(ErrorDeDominio):
 
 class EntidadNoEncontrada(ErrorDeDominio):
     """El estudiante o curso indicado no existe."""
+
+
+class AsistenciaYaRegistrada(ErrorDeDominio):
+    """La asistencia del día ya fue registrada y no admite modificaciones (CU5)."""
+
+
+class FechaInvalida(ErrorDeDominio):
+    """No se puede registrar asistencia de una fecha futura."""
