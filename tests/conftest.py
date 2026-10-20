@@ -24,3 +24,34 @@ def usuarios_base():
 @pytest.fixture
 def repo_usuarios(usuarios_base):
     return RepositorioUsuariosMemoria(usuarios_base.values())
+
+
+@pytest.fixture
+def repo_estudiantes():
+    from escolar.domain.entities import Estudiante
+    from escolar.infrastructure.repositorios_memoria import RepositorioEstudiantesMemoria
+
+    return RepositorioEstudiantesMemoria(
+        [
+            Estudiante("E1", "Luis Quispe", "5to", "A", apoderado_id="U4"),
+            Estudiante("E2", "Mia Ccori", "5to", "A", apoderado_id="U5"),
+            Estudiante("E3", "Eli Estudiante", "4to", "B", apoderado_id="U5", usuario_id="U6"),
+        ]
+    )
+
+
+@pytest.fixture
+def repo_cursos():
+    from escolar.domain.entities import Curso
+    from escolar.infrastructure.repositorios_memoria import RepositorioCursosMemoria
+
+    return RepositorioCursosMemoria(
+        [Curso("C1", "Matemática", docente_id="U2"), Curso("C2", "Comunicación", docente_id="U3")]
+    )
+
+
+@pytest.fixture
+def repo_calificaciones():
+    from escolar.infrastructure.repositorios_memoria import RepositorioCalificacionesMemoria
+
+    return RepositorioCalificacionesMemoria()
