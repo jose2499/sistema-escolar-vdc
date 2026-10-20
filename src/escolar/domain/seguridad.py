@@ -3,6 +3,8 @@ import hmac
 import os
 
 _ITERACIONES = 120_000
+LONGITUD_DNI = 8
+MAX_LONGITUD_PASSWORD = 15
 
 
 def _derivar(password: str, salt: bytes, iteraciones: int) -> str:
@@ -21,3 +23,10 @@ def verificar_password(password: str, almacenado: str) -> bool:
     except ValueError:
         return False
     return hmac.compare_digest(derivado, hash_hex)
+
+
+def formato_valido(dni: str, password: str) -> bool:
+    """CU1: DNI de 8 dígitos y clave no vacía de hasta 15 caracteres."""
+    dni_ok = len(dni) == LONGITUD_DNI and dni.isascii() and dni.isdigit()
+    password_ok = 0 < len(password) <= MAX_LONGITUD_PASSWORD
+    return dni_ok and password_ok
