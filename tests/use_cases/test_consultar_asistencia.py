@@ -1,10 +1,10 @@
 from datetime import date, timedelta
 
 import pytest
-from escolar.use_cases.consultar_asistencia import ConsultarAsistencia
 
 from escolar.domain.entities import EstadoAsistencia
 from escolar.domain.errors import EntidadNoEncontrada
+from escolar.use_cases.consultar_asistencia import ConsultarAsistencia
 from escolar.use_cases.registrar_asistencia import RegistrarAsistencia
 
 INICIO = date(2026, 3, 2)
