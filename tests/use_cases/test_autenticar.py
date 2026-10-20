@@ -1,4 +1,5 @@
 import pytest
+
 from escolar.domain.entities import Rol
 from escolar.domain.errors import CredencialesInvalidas, UsuarioInactivo
 from escolar.use_cases.autenticar import AutenticarUsuario

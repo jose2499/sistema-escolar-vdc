@@ -1,4 +1,5 @@
 import pytest
+
 from escolar.domain.entities import Rol, Usuario
 from escolar.domain.seguridad import hash_password
 from escolar.infrastructure.repositorios_memoria import RepositorioUsuariosMemoria
