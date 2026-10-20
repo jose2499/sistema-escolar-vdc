@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import date
 from enum import StrEnum
 
 
@@ -43,3 +44,17 @@ class Calificacion:
     periodo: int
     nota: float
     docente_id: str
+
+
+class EstadoAsistencia(StrEnum):
+    PRESENTE = "presente"
+    FALTA = "falta"
+    TARDANZA = "tardanza"
+    JUSTIFICADA = "justificada"
+
+
+@dataclass(frozen=True)
+class Asistencia:
+    estudiante_id: str
+    fecha: date
+    estado: EstadoAsistencia

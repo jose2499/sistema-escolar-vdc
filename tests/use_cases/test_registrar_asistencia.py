@@ -1,7 +1,6 @@
 from datetime import date
 
 import pytest
-from escolar.use_cases.registrar_asistencia import RegistrarAsistencia
 
 from escolar.domain.entities import EstadoAsistencia
 from escolar.domain.errors import (
@@ -10,6 +9,7 @@ from escolar.domain.errors import (
     FechaInvalida,
     PermisoDenegado,
 )
+from escolar.use_cases.registrar_asistencia import RegistrarAsistencia
 
 HOY = date(2026, 10, 20)
 
