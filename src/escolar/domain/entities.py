@@ -17,3 +17,29 @@ class Usuario:
     rol: Rol
     password_hash: str
     activo: bool = True
+
+
+@dataclass(frozen=True)
+class Estudiante:
+    id: str
+    nombre: str
+    grado: str
+    seccion: str
+    apoderado_id: str
+    usuario_id: str | None = None
+
+
+@dataclass(frozen=True)
+class Curso:
+    id: str
+    nombre: str
+    docente_id: str
+
+
+@dataclass(frozen=True)
+class Calificacion:
+    estudiante_id: str
+    curso_id: str
+    periodo: int
+    nota: float
+    docente_id: str
