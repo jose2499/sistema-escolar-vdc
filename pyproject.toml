@@ -1,0 +1,19 @@
+[project]
+name = "sistema-escolar-vdc"
+version = "0.1.0"
+description = "Gestión de calificaciones, asistencia y acceso por rol - I.E. N° 51037 Virgen del Carmen"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.coverage.run]
+source = ["src"]
