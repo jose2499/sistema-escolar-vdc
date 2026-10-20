@@ -1,5 +1,4 @@
 import pytest
-from escolar.use_cases.registrar_calificacion import RegistrarCalificacion
 
 from escolar.domain.errors import (
     EntidadNoEncontrada,
@@ -7,6 +6,7 @@ from escolar.domain.errors import (
     PeriodoInvalido,
     PermisoDenegado,
 )
+from escolar.use_cases.registrar_calificacion import RegistrarCalificacion
 
 
 @pytest.fixture
