@@ -1,4 +1,3 @@
-
 # src/escolar/infrastructure/models.py
 
 from sqlalchemy import Column, Float, ForeignKey, Integer, String
