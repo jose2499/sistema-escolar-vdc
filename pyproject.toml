@@ -3,6 +3,10 @@ name = "sistema-escolar-vdc"
 version = "0.1.0"
 description = "Gestión de calificaciones, asistencia y acceso por rol - I.E. N° 51037 Virgen del Carmen"
 requires-python = ">=3.11"
+dependencies = [
+    "SQLAlchemy>=2.0,<3.0",
+]
+
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]

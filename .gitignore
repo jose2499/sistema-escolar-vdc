@@ -7,3 +7,6 @@ htmlcov/
 .venv/
 .idea/
 .vscode/
+
+# Archivos generados por la instalación
+*.egg-info/
