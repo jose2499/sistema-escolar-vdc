@@ -1,27 +1,19 @@
-﻿import sys
-from pathlib import Path
-
-src_dir = Path(__file__).resolve().parent.parent.parent
-if str(src_dir) not in sys.path:
-    sys.path.insert(0, str(src_dir))
-
 import tkinter as tk
 from tkinter import messagebox
 
-from escolar.infrastructure.repositories_memoria import RepositorioUsuariosEnMemoria
-from escolar.use_cases.autenticar import AutenticarUsuario, ErrorAutenticacion
+from escolar.infrastructure.repositorios_memoria import RepositorioUsuariosMemoria
 from escolar.presentation.dashboard_view import DashboardView
+from escolar.use_cases.autenticar import AutenticarUsuario, ErrorAutenticacion
 
 
 class LoginView:
-
     def __init__(self, root):
         self.root = root
         self.root.title("Sistema Escolar VDC - Inicio de Sesión")
         self.root.geometry("420x400")
         self.root.resizable(False, False)
 
-        self.repo_usuarios = RepositorioUsuariosEnMemoria()
+        self.repo_usuarios = RepositorioUsuariosMemoria()
         self.use_case_autenticar = AutenticarUsuario(self.repo_usuarios)
 
         self._crear_interfaz()
@@ -60,11 +52,14 @@ class LoginView:
         self.entry_clave.pack(side="left")
 
         self.btn_ver = tk.Button(
-            frame_clave, text="👁", font=("Arial", 8), command=self._toggle_clave, width=3
+            frame_clave,
+            text="👁",
+            font=("Arial", 8),
+            command=self._toggle_clave,
+            width=3,
         )
         self.btn_ver.pack(side="left", padx=(5, 0))
 
-        # Evento ENTER
         self.root.bind("<Return>", lambda event: self._iniciar_sesion())
 
         btn_ingresar = tk.Button(
@@ -106,4 +101,3 @@ class LoginView:
             messagebox.showerror("Error de Acceso", str(error))
         except Exception as e:
             messagebox.showerror("Error", f"Ocurrió un error inesperado: {e}")
-

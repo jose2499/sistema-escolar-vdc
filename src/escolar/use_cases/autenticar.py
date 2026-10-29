@@ -1,5 +1,6 @@
-﻿class ErrorAutenticacion(Exception):
+class ErrorAutenticacion(Exception):
     pass
+
 
 class AutenticarUsuario:
     def __init__(self, repo_usuarios):
@@ -10,4 +11,3 @@ class AutenticarUsuario:
         if not usuario or usuario.clave != clave:
             raise ErrorAutenticacion("Credenciales incorrectas")
         return usuario
-

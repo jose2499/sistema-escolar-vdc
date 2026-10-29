@@ -1,9 +1,8 @@
-﻿import tkinter as tk
+import tkinter as tk
 from tkinter import messagebox
 
 
 class DashboardView:
-
     def __init__(self, root, usuario):
         self.root = root
         self.usuario = usuario
@@ -13,7 +12,6 @@ class DashboardView:
         self._crear_interfaz()
 
     def _crear_interfaz(self):
-        # Header
         frame_header = tk.Frame(self.root, bg="#2B579A")
         frame_header.pack(fill="x")
 
@@ -37,7 +35,6 @@ class DashboardView:
         )
         btn_salir.pack(side="right", padx=15, pady=12)
 
-        # Contenido por Rol
         frame_contenido = tk.Frame(self.root, padx=20, pady=20)
         frame_contenido.pack(fill="both", expand=True)
 
@@ -61,7 +58,6 @@ class DashboardView:
         grid_frame = tk.Frame(parent)
         grid_frame.pack(fill="x")
 
-        # Botones con diseño estilo Card
         btn_calificaciones = tk.Button(
             grid_frame,
             text="📝 Registrar Calificaciones",
@@ -114,5 +110,5 @@ class DashboardView:
         if messagebox.askyesno("Confirmar", "¿Desea cerrar sesión?"):
             self.root.destroy()
             from escolar.presentation.app import main
-            main()
 
+            main()

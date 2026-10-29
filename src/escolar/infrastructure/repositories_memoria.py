@@ -1,4 +1,5 @@
-﻿from escolar.domain.models import Usuario, Rol
+from escolar.domain.models import Rol, Usuario
+
 
 class RepositorioUsuariosEnMemoria:
     def __init__(self):
@@ -13,4 +14,3 @@ class RepositorioUsuariosEnMemoria:
             if u.dni == dni:
                 return u
         return None
-
