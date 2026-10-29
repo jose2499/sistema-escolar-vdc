@@ -1,0 +1,98 @@
+﻿import sys
+from pathlib import Path
+
+src_dir = Path(__file__).resolve().parent.parent.parent
+if str(src_dir) not in sys.path:
+    sys.path.insert(0, str(src_dir))
+
+import tkinter as tk
+from tkinter import messagebox
+
+from escolar.infrastructure.repositories_memoria import RepositorioUsuariosEnMemoria
+from escolar.use_cases.autenticar import AutenticarUsuario, ErrorAutenticacion
+from escolar.presentation.dashboard_view import DashboardView
+
+
+class LoginView:
+
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Sistema Escolar VDC - Inicio de Sesion")
+        self.root.geometry("420x380")
+        self.root.resizable(False, False)
+
+        self.repo_usuarios = RepositorioUsuariosEnMemoria()
+        self.use_case_autenticar = AutenticarUsuario(self.repo_usuarios)
+
+        self._crear_interfaz()
+
+    def _crear_interfaz(self):
+        label_titulo = tk.Label(
+            self.root,
+            text="I.E. N° 51037 Virgen del Carmen",
+            font=("Arial", 14, "bold"),
+            fg="#2B579A",
+        )
+        label_titulo.pack(pady=(25, 5))
+
+        label_subtitulo = tk.Label(
+            self.root,
+            text="Sistema de Gestion Escolar",
+            font=("Arial", 10, "italic"),
+            fg="#555555",
+        )
+        label_subtitulo.pack(pady=(0, 20))
+
+        lbl_dni = tk.Label(
+            self.root, text="DNI (8 digitos):", font=("Arial", 10)
+        )
+        lbl_dni.pack(anchor="w", padx=50)
+
+        self.entry_dni = tk.Entry(self.root, font=("Arial", 11), width=28)
+        self.entry_dni.pack(padx=50, pady=(2, 12))
+
+        lbl_clave = tk.Label(
+            self.root, text="Contrasena:", font=("Arial", 10)
+        )
+        lbl_clave.pack(anchor="w", padx=50)
+
+        self.entry_clave = tk.Entry(
+            self.root, show="*", font=("Arial", 11), width=28
+        )
+        self.entry_clave.pack(padx=50, pady=(2, 20))
+
+        btn_ingresar = tk.Button(
+            self.root,
+            text="INICIAR SESION",
+            bg="#2B579A",
+            fg="white",
+            font=("Arial", 10, "bold"),
+            cursor="hand2",
+            command=self._iniciar_sesion,
+        )
+        btn_ingresar.pack(ipady=5, ipadx=15)
+
+    def _iniciar_sesion(self):
+        dni = self.entry_dni.get().strip()
+        clave = self.entry_clave.get().strip()
+
+        if not dni or not clave:
+            messagebox.showwarning(
+                "Atencion", "Por favor ingrese su DNI y contrasena."
+            )
+            return
+
+        try:
+            usuario = self.use_case_autenticar.ejecutar(dni, clave)
+            self.root.destroy()
+
+            root_dashboard = tk.Tk()
+            root_dashboard.eval("tk::PlaceWindow . center")
+            DashboardView(root_dashboard, usuario)
+            root_dashboard.mainloop()
+
+        except ErrorAutenticacion as error:
+            messagebox.showerror("Error de Acceso", str(error))
+        except Exception as e:
+            messagebox.showerror("Error", f"Ocurrio un error inesperado: {e}")
+
