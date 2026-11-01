@@ -1,4 +1,3 @@
-
 from datetime import date
 
 import customtkinter as ctk
@@ -7,8 +6,8 @@ from escolar.domain.entities import (
     Asistencia,
     Calificacion,
     Curso,
-    Estudiante,
     EstadoAsistencia,
+    Estudiante,
     Rol,
     Usuario,
 )
@@ -26,7 +25,6 @@ from escolar.use_cases.consultar_asistencia import ConsultarAsistencia
 from escolar.use_cases.consultar_calificaciones import ConsultarCalificaciones
 from escolar.use_cases.registrar_asistencia import RegistrarAsistencia
 from escolar.use_cases.registrar_calificacion import RegistrarCalificacion
-
 
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("blue")
@@ -70,20 +68,12 @@ def crear_servicios_demo():
 
     # Notas de demostración.
     for estudiante_id in ("E1", "E2", "E3"):
-        repo_calificaciones.guardar(
-            Calificacion(estudiante_id, "C1", 1, 14, "U2")
-        )
-        repo_calificaciones.guardar(
-            Calificacion(estudiante_id, "C2", 1, 16, "U3")
-        )
+        repo_calificaciones.guardar(Calificacion(estudiante_id, "C1", 1, 14, "U2"))
+        repo_calificaciones.guardar(Calificacion(estudiante_id, "C2", 1, 16, "U3"))
 
     # Asistencias de demostración.
-    repo_asistencias.guardar(
-        Asistencia("E1", date.today(), EstadoAsistencia.PRESENTE)
-    )
-    repo_asistencias.guardar(
-        Asistencia("E2", date.today(), EstadoAsistencia.TARDANZA)
-    )
+    repo_asistencias.guardar(Asistencia("E1", date.today(), EstadoAsistencia.PRESENTE))
+    repo_asistencias.guardar(Asistencia("E2", date.today(), EstadoAsistencia.TARDANZA))
 
     return {
         "autenticar": AutenticarUsuario(repo_usuarios),
@@ -97,12 +87,8 @@ def crear_servicios_demo():
         "consultar_calificaciones": ConsultarCalificaciones(
             repo_estudiantes, repo_cursos, repo_calificaciones
         ),
-        "registrar_asistencia": RegistrarAsistencia(
-            repo_estudiantes, repo_asistencias
-        ),
-        "consultar_asistencia": ConsultarAsistencia(
-            repo_estudiantes, repo_asistencias
-        ),
+        "registrar_asistencia": RegistrarAsistencia(repo_estudiantes, repo_asistencias),
+        "consultar_asistencia": ConsultarAsistencia(repo_estudiantes, repo_asistencias),
     }
 
 
@@ -535,9 +521,7 @@ class AplicacionEscolar(ctk.CTk):
             self.alerta("error", "No se pudo guardar", str(error))
 
     def tabla_calificaciones(self, padre):
-        calificaciones = self.servicios["consultar_calificaciones"].ejecutar(
-            self.sesion.usuario
-        )
+        calificaciones = self.servicios["consultar_calificaciones"].ejecutar(self.sesion.usuario)
 
         tabla = ctk.CTkScrollableFrame(
             padre,
@@ -572,10 +556,7 @@ class AplicacionEscolar(ctk.CTk):
             nombre = estudiante.nombre if estudiante else cal.estudiante_id
             nombre_curso = curso.nombre if curso else cal.curso_id
 
-            linea = (
-                f"{nombre[:22]:22}  {nombre_curso[:20]:20}  "
-                f"{cal.periodo:^8}  {cal.nota:>5.2f}"
-            )
+            linea = f"{nombre[:22]:22}  {nombre_curso[:20]:20}  {cal.periodo:^8}  {cal.nota:>5.2f}"
 
             ctk.CTkLabel(
                 tabla,
@@ -687,9 +668,7 @@ class AplicacionEscolar(ctk.CTk):
         tabla.pack(fill="both", expand=True, padx=25, pady=10)
 
         for estudiante in self.estudiantes_visibles():
-            registros = self.servicios["asistencias"].listar_por_estudiante(
-                estudiante.id
-            )
+            registros = self.servicios["asistencias"].listar_por_estudiante(estudiante.id)
             resumen = self.servicios["consultar_asistencia"].resumen(estudiante.id)
 
             texto = (
@@ -709,10 +688,7 @@ class AplicacionEscolar(ctk.CTk):
             ).pack(anchor="w", padx=10, pady=8)
 
             for registro in registros:
-                detalle = (
-                    f"    {registro.fecha.isoformat()} - "
-                    f"{registro.estado.value.upper()}"
-                )
+                detalle = f"    {registro.fecha.isoformat()} - {registro.estado.value.upper()}"
                 ctk.CTkLabel(
                     tabla,
                     text=detalle,
