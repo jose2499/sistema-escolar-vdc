@@ -69,3 +69,17 @@ def reloj():
     from datetime import date
 
     return lambda: date(2026, 10, 20)
+
+# --- Fixture para pruebas de persistencia ORM (PBI-06) ---
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from escolar.infrastructure.models import Base
+
+@pytest.fixture(scope="function")
+def db_session():
+    engine = create_engine("sqlite:///:memory:")
+    Base.metadata.create_all(bind=engine)
+    session = sessionmaker(bind=engine)()
+    yield session
+    session.close()
+    engine.dispose()
