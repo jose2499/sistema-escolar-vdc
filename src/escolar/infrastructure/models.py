@@ -15,7 +15,7 @@ class EstudianteModel(Base):
     dni: Mapped[str] = mapped_column(String(8), unique=True, nullable=False)
 
     calificaciones: Mapped[List["CalificacionModel"]] = relationship(
-        "CalificacionModel", back_populates="estudiante"
+        "CalificacionModel", back_populates="estudiante", cascade="all, delete-orphan"
     )
 
 
