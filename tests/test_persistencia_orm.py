@@ -1,5 +1,5 @@
 from sqlalchemy import select
-from escolar.infrastructure.models import EstudianteModel, CalificacionModel
+from escolar.infrastructure.models import EstudianteModel, CalificacionModel, CursoModel
 
 
 def test_guardar_estudiante_con_sus_calificaciones(db_session):
@@ -21,7 +21,7 @@ def test_guardar_estudiante_con_sus_calificaciones(db_session):
     assert estudiante_db.calificaciones[0].estudiante.nombre == "Ana Quispe"
 
 
-    def test_eliminar_estudiante_elimina_sus_calificaciones(db_session):
+def test_eliminar_estudiante_elimina_sus_calificaciones(db_session):
     # Dado un estudiante con una calificación persistida
     estudiante = EstudianteModel(nombre="Luis Ramos", dni="87654321")
     CalificacionModel(nota=12, bimestre=1, estudiante=estudiante)
@@ -37,3 +37,16 @@ def test_guardar_estudiante_con_sus_calificaciones(db_session):
         select(CalificacionModel).filter_by(nota=12)
     ).first()
     assert calificacion_db is None
+
+
+def test_guardar_curso(db_session):
+    # Dado un curso nuevo
+    curso = CursoModel(nombre="Historia")
+    
+    # Cuando se persiste en la base de datos
+    db_session.add(curso)
+    db_session.commit()
+    
+    # Entonces se recupera de la base de datos
+    curso_db = db_session.scalars(select(CursoModel).filter_by(nombre="Historia")).first()
+    assert curso_db is not None
