@@ -28,9 +28,7 @@ def test_eliminar_estudiante_elimina_sus_calificaciones(db_session):
     db_session.delete(estudiante)
     db_session.commit()
 
-    calificacion_db = db_session.scalars(
-        select(CalificacionModel).filter_by(nota=12)
-    ).first()
+    calificacion_db = db_session.scalars(select(CalificacionModel).filter_by(nota=12)).first()
     assert calificacion_db is None
 
 
@@ -38,6 +36,6 @@ def test_guardar_curso(db_session):
     curso = CursoModel(nombre="Historia")
     db_session.add(curso)
     db_session.commit()
-    
+
     curso_db = db_session.scalars(select(CursoModel).filter_by(nombre="Historia")).first()
     assert curso_db is not None

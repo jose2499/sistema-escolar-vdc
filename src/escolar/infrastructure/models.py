@@ -1,10 +1,10 @@
-
 from sqlalchemy import Float, ForeignKey, Integer, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
 class Base(DeclarativeBase):
     """Clase base declarativa para todas las entidades ORM."""
+
     pass
 
 
