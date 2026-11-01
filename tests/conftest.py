@@ -1,4 +1,6 @@
 import pytest
+from datetime import date
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -69,35 +71,8 @@ def repo_asistencia():
 
 @pytest.fixture
 def reloj():
-    from datetime import date
-
     return lambda: date(2026, 10, 20)
 
-<<<<<<< HEAD
-
-
-@pytest.fixture(scope="function")
-def db_session():
-    """Session limpia de SQLite en memoria para cada prueba."""
-=======
-# --- Fixture para pruebas de persistencia ORM (PBI-06) ---
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from escolar.infrastructure.models import Base
-
-@pytest.fixture(scope="function")
-def db_session():
->>>>>>> 2516c1ed33d027b4184c4220729e6a813da47580
-    engine = create_engine("sqlite:///:memory:")
-    Base.metadata.create_all(bind=engine)
-    session = sessionmaker(bind=engine)()
-    yield session
-    session.close()
-<<<<<<< HEAD
-    engine.dispose()
-=======
-    engine.dispose()
->>>>>>> 2516c1ed33d027b4184c4220729e6a813da47580
 
 @pytest.fixture(scope="function")
 def db_session():
