@@ -1,6 +1,6 @@
-import pytest
 from datetime import date
 
+import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
