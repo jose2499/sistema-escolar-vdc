@@ -1,5 +1,6 @@
 from sqlalchemy import select
-from escolar.infrastructure.models import EstudianteModel, CalificacionModel, CursoModel
+
+from escolar.infrastructure.models import CalificacionModel, CursoModel, EstudianteModel
 
 
 def test_guardar_estudiante_con_sus_calificaciones(db_session):

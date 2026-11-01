@@ -1,7 +1,10 @@
 import pytest
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 from escolar.domain.entities import Rol, Usuario
 from escolar.domain.seguridad import hash_password
+from escolar.infrastructure.models import Base
 from escolar.infrastructure.repositorios_memoria import RepositorioUsuariosMemoria
 
 PASSWORD = "clave123"
@@ -69,3 +72,15 @@ def reloj():
     from datetime import date
 
     return lambda: date(2026, 10, 20)
+
+
+
+@pytest.fixture(scope="function")
+def db_session():
+    """Session limpia de SQLite en memoria para cada prueba."""
+    engine = create_engine("sqlite:///:memory:")
+    Base.metadata.create_all(bind=engine)
+    session = sessionmaker(bind=engine)()
+    yield session
+    session.close()
+    engine.dispose()

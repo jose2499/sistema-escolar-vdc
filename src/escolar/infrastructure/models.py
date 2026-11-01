@@ -1,4 +1,4 @@
-from typing import List
+
 from sqlalchemy import Float, ForeignKey, Integer, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
@@ -15,7 +15,7 @@ class EstudianteModel(Base):
     nombre: Mapped[str] = mapped_column(String(100), nullable=False)
     dni: Mapped[str] = mapped_column(String(8), unique=True, nullable=False)
 
-    calificaciones: Mapped[List["CalificacionModel"]] = relationship(
+    calificaciones: Mapped[list["CalificacionModel"]] = relationship(
         "CalificacionModel", back_populates="estudiante", cascade="all, delete-orphan"
     )
 
