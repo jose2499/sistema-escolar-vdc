@@ -1,4 +1,6 @@
+import pytest
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 
 from escolar.infrastructure.models import CalificacionModel, CursoModel, EstudianteModel
 
@@ -39,3 +41,12 @@ def test_guardar_curso(db_session):
 
     curso_db = db_session.scalars(select(CursoModel).filter_by(nombre="Historia")).first()
     assert curso_db is not None
+
+
+def test_nota_fuera_de_rango_es_rechazada_por_la_base(db_session):
+    estudiante = EstudianteModel(nombre="Rosa Mamani", dni="11223344")
+    CalificacionModel(nota=25, bimestre=1, estudiante=estudiante)
+    db_session.add(estudiante)
+
+    with pytest.raises(IntegrityError):
+        db_session.commit()
