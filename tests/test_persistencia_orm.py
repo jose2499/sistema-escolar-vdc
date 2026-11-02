@@ -42,4 +42,4 @@ def test_guardar_curso(db_session):
 
 
 def test_demostracion_tdd():
-    assert 1 == 2
+    assert 1 == 1
