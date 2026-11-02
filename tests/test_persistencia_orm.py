@@ -39,3 +39,7 @@ def test_guardar_curso(db_session):
 
     curso_db = db_session.scalars(select(CursoModel).filter_by(nombre="Historia")).first()
     assert curso_db is not None
+
+
+def test_demostracion_tdd():
+    assert 1 == 2
