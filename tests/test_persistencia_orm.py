@@ -41,5 +41,5 @@ def test_guardar_curso(db_session):
     assert curso_db is not None
 
 
-def test_demostracion_tdd():
+
     assert 1 == 1
