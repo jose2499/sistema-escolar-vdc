@@ -1,4 +1,4 @@
-from sqlalchemy import Float, ForeignKey, Integer, String
+from sqlalchemy import CheckConstraint, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
@@ -22,6 +22,11 @@ class EstudianteModel(Base):
 
 class CalificacionModel(Base):
     __tablename__ = "calificaciones"
+    __table_args__ = (
+        CheckConstraint(
+            "nota >= 0 AND nota <= 20", name="ck_calificaciones_nota_rango"
+        ),
+    )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     nota: Mapped[float] = mapped_column(Float, nullable=False)
