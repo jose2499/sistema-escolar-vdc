@@ -1541,6 +1541,7 @@ class AplicacionEscolar(ctk.CTk):
                     zip(
                         valores,
                         [0.31, 0.25, 0.15, 0.14],
+                        strict=True,
                     )
                 ),
             )
@@ -1581,7 +1582,11 @@ class AplicacionEscolar(ctk.CTk):
         ).pack(pady=(24, 8))
         ctk.CTkLabel(
             ventana,
-            text=f"Estudiante: {calificacion.estudiante_id} · Curso: {calificacion.curso_id} · Periodo: {calificacion.periodo}",
+            text=(
+                f"Estudiante: {calificacion.estudiante_id} · "
+                f"Curso: {calificacion.curso_id} · "
+                f"Periodo: {calificacion.periodo}"
+            ),
             font=(FONT, 10),
             text_color=COLOR["muted"],
             wraplength=340,
