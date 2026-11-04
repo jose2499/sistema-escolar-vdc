@@ -43,6 +43,6 @@ Estimación en puntos de historia (escala Fibonacci). Cada PBI tiene su issue en
 | PBI-03 | Ciclo TDD en `main`: RED `a25d494` y `fd094c8`, GREEN `51c678f` y `d1e241c`, REFACTOR `168fc7c` |
 | PBI-04 | Ciclo TDD en `main`: RED `bd36021`, GREEN `55b172f`, REFACTOR `823f920` |
 | PBI-06 | PR #7 (persistencia ORM, relación 1:N y cascada) y PR #13 (restricción de nota 0-20) |
-| PBI-07 | PR #8 (GUI de login y dashboard) y PR #20 (wireframes en `docs/wireframes/`) |
+| PBI-07 | PR #8 (GUI de login y dashboard) y PR #21 (wireframes en docs/wireframes/) |
 
 Los PBI-05, 08 y 09 están planificados para los siguientes sprints.
