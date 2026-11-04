@@ -1,4 +1,5 @@
 from datetime import date
+
 import customtkinter as ctk
 
 from escolar.domain.entities import (
@@ -24,7 +25,6 @@ from escolar.use_cases.consultar_asistencia import ConsultarAsistencia
 from escolar.use_cases.consultar_calificaciones import ConsultarCalificaciones
 from escolar.use_cases.registrar_asistencia import RegistrarAsistencia
 from escolar.use_cases.registrar_calificacion import RegistrarCalificacion
-
 
 # =========================================================
 # CONFIGURACIÓN VISUAL
@@ -63,6 +63,7 @@ FONT = "Segoe UI"
 # SERVICIOS DE DEMOSTRACIÓN
 # =========================================================
 
+
 def crear_servicios_demo():
     clave = hash_password("clave123", iteraciones=1000)
 
@@ -93,12 +94,8 @@ def crear_servicios_demo():
     repo_asistencias = RepositorioAsistenciaMemoria()
 
     for estudiante_id in ("E1", "E2", "E3"):
-        repo_calificaciones.guardar(
-            Calificacion(estudiante_id, "C1", 1, 14, "U2")
-        )
-        repo_calificaciones.guardar(
-            Calificacion(estudiante_id, "C2", 1, 16, "U3")
-        )
+        repo_calificaciones.guardar(Calificacion(estudiante_id, "C1", 1, 14, "U2"))
+        repo_calificaciones.guardar(Calificacion(estudiante_id, "C2", 1, 16, "U3"))
 
     return {
         "autenticar": AutenticarUsuario(repo_usuarios),
@@ -110,7 +107,6 @@ def crear_servicios_demo():
         "lista_cursos": cursos,
         "calificaciones": repo_calificaciones,
         "asistencias": repo_asistencias,
-
         "registrar_calificacion": RegistrarCalificacion(
             repo_estudiantes,
             repo_cursos,
@@ -136,8 +132,8 @@ def crear_servicios_demo():
 # COMPONENTE DE ALERTAS
 # =========================================================
 
-class Alerta(ctk.CTkToplevel):
 
+class Alerta(ctk.CTkToplevel):
     def __init__(self, padre, tipo, titulo, mensaje):
         super().__init__(padre)
 
@@ -175,13 +171,9 @@ class Alerta(ctk.CTkToplevel):
 
         self.update_idletasks()
 
-        x = padre.winfo_rootx() + (
-            padre.winfo_width() - 440
-        ) // 2
+        x = padre.winfo_rootx() + (padre.winfo_width() - 440) // 2
 
-        y = padre.winfo_rooty() + (
-            padre.winfo_height() - 270
-        ) // 2
+        y = padre.winfo_rooty() + (padre.winfo_height() - 270) // 2
 
         self.geometry(f"440x270+{x}+{y}")
 
@@ -238,8 +230,8 @@ class Alerta(ctk.CTkToplevel):
 # APLICACIÓN
 # =========================================================
 
-class AplicacionEscolar(ctk.CTk):
 
+class AplicacionEscolar(ctk.CTk):
     NOMBRES = {
         "inicio": "Panel principal",
         "usuarios": "Gestión de usuarios",
@@ -373,7 +365,7 @@ class AplicacionEscolar(ctk.CTk):
                 text=descripcion,
                 font=(FONT, 12),
                 text_color=COLOR["muted"],
-        ).pack(anchor="w", padx=30, pady=(0, 18))
+            ).pack(anchor="w", padx=30, pady=(0, 18))
 
     def crear_panel(self, padre, titulo=None):
         panel = ctk.CTkFrame(
@@ -595,13 +587,9 @@ class AplicacionEscolar(ctk.CTk):
     def alternar_password(self):
         self.mostrar_password = not self.mostrar_password
 
-        self.password.configure(
-            show="" if self.mostrar_password else "*"
-        )
+        self.password.configure(show="" if self.mostrar_password else "*")
 
-        self.boton_ver.configure(
-            text="Ocultar" if self.mostrar_password else "Ver"
-        )
+        self.boton_ver.configure(text="Ocultar" if self.mostrar_password else "Ver")
 
     def iniciar_sesion(self):
         dni = self.dni.get().strip()
@@ -811,11 +799,7 @@ class AplicacionEscolar(ctk.CTk):
             activo = nombre == modulo
 
             boton.configure(
-                fg_color=(
-                    COLOR["sidebar_hover"]
-                    if activo
-                    else "transparent"
-                ),
+                fg_color=(COLOR["sidebar_hover"] if activo else "transparent"),
                 text_color="white" if activo else "#DCE6F4",
                 font=(
                     FONT,
@@ -883,26 +867,16 @@ class AplicacionEscolar(ctk.CTk):
             "Bienvenido al Sistema Escolar Virgen del Carmen.",
         )
 
-        cantidad_estudiantes = len(
-            self.estudiantes_visibles()
-        )
+        cantidad_estudiantes = len(self.estudiantes_visibles())
 
-        cantidad_cursos = len(
-            self.cursos_visibles()
-        )
+        cantidad_cursos = len(self.cursos_visibles())
 
         cantidad_notas = len(
-            self.servicios["consultar_calificaciones"].ejecutar(
-                self.sesion.usuario
-            )
+            self.servicios["consultar_calificaciones"].ejecutar(self.sesion.usuario)
         )
 
         cantidad_asistencias = sum(
-            len(
-                self.servicios["asistencias"].listar_por_estudiante(
-                    estudiante.id
-                )
-            )
+            len(self.servicios["asistencias"].listar_por_estudiante(estudiante.id))
             for estudiante in self.estudiantes_visibles()
         )
 
@@ -1101,9 +1075,7 @@ class AplicacionEscolar(ctk.CTk):
 
             ctk.CTkLabel(
                 fila,
-                text=(
-                    f"{estudiante.grado} {estudiante.seccion}"
-                ),
+                text=(f"{estudiante.grado} {estudiante.seccion}"),
                 font=(FONT, 11),
                 text_color=COLOR["muted"],
             ).pack(side="right", padx=15)
@@ -1169,11 +1141,7 @@ class AplicacionEscolar(ctk.CTk):
 
             ctk.CTkLabel(
                 izquierda,
-                text=(
-                    docente.nombre
-                    if docente
-                    else "Docente no disponible"
-                ),
+                text=(docente.nombre if docente else "Docente no disponible"),
                 font=(FONT, 10),
                 text_color=COLOR["muted"],
             ).pack(anchor="w")
@@ -1207,9 +1175,7 @@ class AplicacionEscolar(ctk.CTk):
             return
 
         docentes = [
-            usuario
-            for usuario in self.servicios["lista_usuarios"]
-            if usuario.rol is Rol.DOCENTE
+            usuario for usuario in self.servicios["lista_usuarios"] if usuario.rol is Rol.DOCENTE
         ]
 
         panel = self.crear_panel(
@@ -1378,10 +1344,7 @@ class AplicacionEscolar(ctk.CTk):
 
         self.sel_estudiante = ctk.CTkOptionMenu(
             campos,
-            values=[
-                f"{e.id} - {e.nombre}"
-                for e in estudiantes
-            ],
+            values=[f"{e.id} - {e.nombre}" for e in estudiantes],
             height=40,
             corner_radius=9,
         )
@@ -1395,10 +1358,7 @@ class AplicacionEscolar(ctk.CTk):
 
         self.sel_curso = ctk.CTkOptionMenu(
             campos,
-            values=[
-                f"{c.id} - {c.nombre}"
-                for c in cursos
-            ],
+            values=[f"{c.id} - {c.nombre}" for c in cursos],
             height=40,
             corner_radius=9,
         )
@@ -1461,13 +1421,9 @@ class AplicacionEscolar(ctk.CTk):
             return
 
         try:
-            estudiante_id = (
-                self.sel_estudiante.get().split(" - ", 1)[0]
-            )
+            estudiante_id = self.sel_estudiante.get().split(" - ", 1)[0]
 
-            curso_id = (
-                self.sel_curso.get().split(" - ", 1)[0]
-            )
+            curso_id = self.sel_curso.get().split(" - ", 1)[0]
 
             periodo = int(self.sel_periodo.get())
 
@@ -1510,9 +1466,9 @@ class AplicacionEscolar(ctk.CTk):
 
     def tabla_calificaciones(self, padre):
         try:
-            calificaciones = self.servicios[
-                "consultar_calificaciones"
-            ].ejecutar(self.sesion.usuario)
+            calificaciones = self.servicios["consultar_calificaciones"].ejecutar(
+                self.sesion.usuario
+            )
 
         except ErrorDeDominio as error:
             self.alerta(
@@ -1568,13 +1524,9 @@ class AplicacionEscolar(ctk.CTk):
             return
 
         for calificacion in calificaciones:
-            estudiante = self.servicios[
-                "estudiantes"
-            ].obtener(calificacion.estudiante_id)
+            estudiante = self.servicios["estudiantes"].obtener(calificacion.estudiante_id)
 
-            curso = self.servicios[
-                "cursos"
-            ].obtener(calificacion.curso_id)
+            curso = self.servicios["cursos"].obtener(calificacion.curso_id)
 
             valores = [
                 estudiante.nombre if estudiante else calificacion.estudiante_id,
@@ -1611,7 +1563,9 @@ class AplicacionEscolar(ctk.CTk):
             self.alerta("error", "Permiso denegado", "Solo un docente puede editar calificaciones.")
             return
         if calificacion.docente_id != self.sesion.usuario.id:
-            self.alerta("error", "Acceso restringido", "Solo puedes editar tus propias calificaciones.")
+            self.alerta(
+                "error", "Acceso restringido", "Solo puedes editar tus propias calificaciones."
+            )
             return
 
         ventana = ctk.CTkToplevel(self)
@@ -1622,9 +1576,19 @@ class AplicacionEscolar(ctk.CTk):
         ventana.transient(self)
         ventana.grab_set()
 
-        ctk.CTkLabel(ventana, text="Editar calificación", font=(FONT, 20, "bold"), text_color=COLOR["text"]).pack(pady=(24, 8))
-        ctk.CTkLabel(ventana, text=f"Estudiante: {calificacion.estudiante_id} · Curso: {calificacion.curso_id} · Periodo: {calificacion.periodo}", font=(FONT, 10), text_color=COLOR["muted"], wraplength=340).pack(padx=20, pady=8)
-        entrada = ctk.CTkEntry(ventana, width=220, height=40, placeholder_text="Nueva nota (0 a 20)")
+        ctk.CTkLabel(
+            ventana, text="Editar calificación", font=(FONT, 20, "bold"), text_color=COLOR["text"]
+        ).pack(pady=(24, 8))
+        ctk.CTkLabel(
+            ventana,
+            text=f"Estudiante: {calificacion.estudiante_id} · Curso: {calificacion.curso_id} · Periodo: {calificacion.periodo}",
+            font=(FONT, 10),
+            text_color=COLOR["muted"],
+            wraplength=340,
+        ).pack(padx=20, pady=8)
+        entrada = ctk.CTkEntry(
+            ventana, width=220, height=40, placeholder_text="Nueva nota (0 a 20)"
+        )
         entrada.pack(pady=12)
         entrada.insert(0, str(calificacion.nota))
 
@@ -1639,7 +1603,9 @@ class AplicacionEscolar(ctk.CTk):
                     nota,
                 )
                 ventana.destroy()
-                self.alerta("exito", "Calificación actualizada", "Los cambios se guardaron correctamente.")
+                self.alerta(
+                    "exito", "Calificación actualizada", "Los cambios se guardaron correctamente."
+                )
                 self.navegar("calificaciones")
             except ValueError:
                 self.alerta("error", "Nota inválida", "Ingresa una nota numérica entre 0 y 20.")
@@ -1686,10 +1652,7 @@ class AplicacionEscolar(ctk.CTk):
 
         self.asistencia_estudiante = ctk.CTkOptionMenu(
             campos,
-            values=[
-                f"{e.id} - {e.nombre}"
-                for e in estudiantes
-            ],
+            values=[f"{e.id} - {e.nombre}" for e in estudiantes],
             height=40,
             corner_radius=9,
         )
@@ -1761,13 +1724,9 @@ class AplicacionEscolar(ctk.CTk):
             return
 
         try:
-            estudiante_id = (
-                self.asistencia_estudiante.get().split(" - ", 1)[0]
-            )
+            estudiante_id = self.asistencia_estudiante.get().split(" - ", 1)[0]
 
-            fecha = date.fromisoformat(
-                self.asistencia_fecha.get().strip()
-            )
+            fecha = date.fromisoformat(self.asistencia_fecha.get().strip())
 
             estados = {
                 "Presente": EstadoAsistencia.PRESENTE,
@@ -1776,9 +1735,7 @@ class AplicacionEscolar(ctk.CTk):
                 "Justificada": EstadoAsistencia.JUSTIFICADA,
             }
 
-            estado = estados[
-                self.asistencia_estado.get()
-            ]
+            estado = estados[self.asistencia_estado.get()]
 
             self.servicios["registrar_asistencia"].ejecutar(
                 self.sesion.usuario,
@@ -1823,8 +1780,15 @@ class AplicacionEscolar(ctk.CTk):
         ventana.transient(self)
         ventana.grab_set()
 
-        ctk.CTkLabel(ventana, text="Editar asistencia", font=(FONT, 20, "bold"), text_color=COLOR["text"]).pack(pady=(24, 8))
-        ctk.CTkLabel(ventana, text=f"Estudiante: {registro.estudiante_id} · Fecha: {registro.fecha.isoformat()}", font=(FONT, 11), text_color=COLOR["muted"]).pack(pady=8)
+        ctk.CTkLabel(
+            ventana, text="Editar asistencia", font=(FONT, 20, "bold"), text_color=COLOR["text"]
+        ).pack(pady=(24, 8))
+        ctk.CTkLabel(
+            ventana,
+            text=f"Estudiante: {registro.estudiante_id} · Fecha: {registro.fecha.isoformat()}",
+            font=(FONT, 11),
+            text_color=COLOR["muted"],
+        ).pack(pady=8)
         opciones = {
             "Presente": EstadoAsistencia.PRESENTE,
             "Falta": EstadoAsistencia.FALTA,
@@ -1832,15 +1796,24 @@ class AplicacionEscolar(ctk.CTk):
             "Justificada": EstadoAsistencia.JUSTIFICADA,
         }
         selector = ctk.CTkOptionMenu(ventana, values=list(opciones.keys()), width=220, height=40)
-        selector.set(next((nombre for nombre, estado in opciones.items() if estado == registro.estado), "Presente"))
+        selector.set(
+            next(
+                (nombre for nombre, estado in opciones.items() if estado == registro.estado),
+                "Presente",
+            )
+        )
         selector.pack(pady=14)
 
         def guardar_cambios():
             try:
-                actualizada = Asistencia(registro.estudiante_id, registro.fecha, opciones[selector.get()])
+                actualizada = Asistencia(
+                    registro.estudiante_id, registro.fecha, opciones[selector.get()]
+                )
                 self.servicios["asistencias"].guardar(actualizada)
                 ventana.destroy()
-                self.alerta("exito", "Asistencia actualizada", "Los cambios se guardaron correctamente.")
+                self.alerta(
+                    "exito", "Asistencia actualizada", "Los cambios se guardaron correctamente."
+                )
                 self.navegar("asistencia")
             except (KeyError, ValueError) as error:
                 self.alerta("error", "No se pudo actualizar", str(error))
@@ -1883,13 +1856,9 @@ class AplicacionEscolar(ctk.CTk):
             return
 
         for estudiante in estudiantes:
-            registros = self.servicios[
-                "asistencias"
-            ].listar_por_estudiante(estudiante.id)
+            registros = self.servicios["asistencias"].listar_por_estudiante(estudiante.id)
 
-            resumen = self.servicios[
-                "consultar_asistencia"
-            ].resumen(estudiante.id)
+            resumen = self.servicios["consultar_asistencia"].resumen(estudiante.id)
 
             tarjeta = ctk.CTkFrame(
                 tabla,
@@ -1902,19 +1871,12 @@ class AplicacionEscolar(ctk.CTk):
 
             ctk.CTkLabel(
                 tarjeta,
-                text=(
-                    f"{estudiante.nombre}  ·  "
-                    f"{estudiante.grado} {estudiante.seccion}"
-                ),
+                text=(f"{estudiante.nombre}  ·  {estudiante.grado} {estudiante.seccion}"),
                 font=(FONT, 14, "bold"),
                 text_color=COLOR["text"],
             ).pack(anchor="w", padx=18, pady=(15, 7))
 
-            color_resumen = (
-                COLOR["danger"]
-                if resumen.alerta
-                else COLOR["muted"]
-            )
+            color_resumen = COLOR["danger"] if resumen.alerta else COLOR["muted"]
 
             ctk.CTkLabel(
                 tarjeta,
@@ -1986,11 +1948,7 @@ class AplicacionEscolar(ctk.CTk):
     ):
         fila = ctk.CTkFrame(
             padre,
-            fg_color=(
-                COLOR["sidebar"]
-                if encabezado
-                else COLOR["surface"]
-            ),
+            fg_color=(COLOR["sidebar"] if encabezado else COLOR["surface"]),
             corner_radius=8,
         )
         fila.pack(fill="x", padx=5, pady=3)
@@ -2006,11 +1964,7 @@ class AplicacionEscolar(ctk.CTk):
                     10 if encabezado else 11,
                     "bold" if encabezado else "normal",
                 ),
-                text_color=(
-                    "white"
-                    if encabezado
-                    else COLOR["text"]
-                ),
+                text_color=("white" if encabezado else COLOR["text"]),
             ).pack(
                 side="left",
                 padx=8,
