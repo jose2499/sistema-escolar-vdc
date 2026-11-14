@@ -1503,12 +1503,8 @@ class AplicacionEscolar(ctk.CTk):
             pady=(0, 15),
         )
 
-        encabezados = [
-            ("ESTUDIANTE", 0.34),
-            ("CURSO", 0.28),
-            ("PERIODO", 0.18),
-            ("NOTA", 0.20),
-        ]
+        anchos = [0.31, 0.25, 0.15, 0.14]
+        encabezados = list(zip(["ESTUDIANTE", "CURSO", "PERIODO", "NOTA"], anchos, strict=True))
 
         self.crear_fila_tabla(
             tabla,
@@ -1524,7 +1520,7 @@ class AplicacionEscolar(ctk.CTk):
             ).pack(pady=25)
             return
 
-        for calificacion in calificaciones:
+        for calificacion in reversed(calificaciones):
             estudiante = self.servicios["estudiantes"].obtener(calificacion.estudiante_id)
 
             curso = self.servicios["cursos"].obtener(calificacion.curso_id)
@@ -1541,7 +1537,7 @@ class AplicacionEscolar(ctk.CTk):
                 list(
                     zip(
                         valores,
-                        [0.31, 0.25, 0.15, 0.14],
+                        anchos,
                         strict=True,
                     )
                 ),
