@@ -1,6 +1,8 @@
 from datetime import date
 
 import customtkinter as ctk
+from sqlalchemy import create_engine, func, select
+from sqlalchemy.orm import sessionmaker
 
 from escolar.domain.entities import (
     Asistencia,
@@ -13,13 +15,14 @@ from escolar.domain.entities import (
 )
 from escolar.domain.errors import ErrorDeDominio
 from escolar.domain.seguridad import hash_password
+from escolar.infrastructure.models import Base, EstudianteModel
 from escolar.infrastructure.repositorios_memoria import (
     RepositorioAsistenciaMemoria,
-    RepositorioCalificacionesMemoria,
     RepositorioCursosMemoria,
     RepositorioEstudiantesMemoria,
     RepositorioUsuariosMemoria,
 )
+from escolar.infrastructure.repositorios_sqlalchemy import RepositorioCalificacionesSQLAlchemy
 from escolar.use_cases.autenticar import AutenticarUsuario
 from escolar.use_cases.consultar_asistencia import ConsultarAsistencia
 from escolar.use_cases.consultar_calificaciones import ConsultarCalificaciones
@@ -63,6 +66,32 @@ FONT = "Segoe UI"
 # SERVICIOS DE DEMOSTRACIÓN
 # =========================================================
 
+URL_BD = "sqlite:///escolar.db"
+
+
+def crear_sesion_bd(url=URL_BD):
+    engine = create_engine(url)
+    Base.metadata.create_all(bind=engine)
+    return sessionmaker(bind=engine)()
+
+
+def sembrar_si_vacia(session, estudiantes):
+    if session.scalar(select(func.count()).select_from(EstudianteModel)):
+        return
+    for numero, estudiante in enumerate(estudiantes, start=1):
+        session.add(
+            EstudianteModel(
+                codigo=estudiante.id,
+                nombre=estudiante.nombre,
+                dni=str(90000000 + numero),
+            )
+        )
+    session.commit()
+    repo = RepositorioCalificacionesSQLAlchemy(session)
+    for estudiante in estudiantes:
+        repo.guardar(Calificacion(estudiante.id, "C1", 1, 14, "U2"))
+        repo.guardar(Calificacion(estudiante.id, "C2", 1, 16, "U3"))
+
 
 def crear_servicios_demo():
     clave = hash_password("clave123", iteraciones=1000)
@@ -90,12 +119,10 @@ def crear_servicios_demo():
     repo_usuarios = RepositorioUsuariosMemoria(usuarios)
     repo_estudiantes = RepositorioEstudiantesMemoria(estudiantes)
     repo_cursos = RepositorioCursosMemoria(cursos)
-    repo_calificaciones = RepositorioCalificacionesMemoria()
+    session = crear_sesion_bd()
+    sembrar_si_vacia(session, estudiantes)
+    repo_calificaciones = RepositorioCalificacionesSQLAlchemy(session)
     repo_asistencias = RepositorioAsistenciaMemoria()
-
-    for estudiante_id in ("E1", "E2", "E3"):
-        repo_calificaciones.guardar(Calificacion(estudiante_id, "C1", 1, 14, "U2"))
-        repo_calificaciones.guardar(Calificacion(estudiante_id, "C2", 1, 16, "U3"))
 
     return {
         "autenticar": AutenticarUsuario(repo_usuarios),
