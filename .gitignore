@@ -8,6 +8,7 @@ htmlcov/
 .idea/
 .vscode/
 
-# Archivos generados por la instalaci�n
+# Archivos generados por la instalación
 *.egg-info/
 *.db
+*.bak
