@@ -15,7 +15,7 @@ from escolar.domain.entities import (
 )
 from escolar.domain.errors import ErrorDeDominio
 from escolar.domain.seguridad import hash_password
-from escolar.infrastructure.models import Base, EstudianteModel
+from escolar.infrastructure.models import Base, CalificacionModel, EstudianteModel
 from escolar.infrastructure.repositorios_memoria import (
     RepositorioAsistenciaMemoria,
     RepositorioCursosMemoria,
@@ -76,21 +76,22 @@ def crear_sesion_bd(url=URL_BD):
 
 
 def sembrar_si_vacia(session, estudiantes):
-    if session.scalar(select(func.count()).select_from(EstudianteModel)):
-        return
-    for numero, estudiante in enumerate(estudiantes, start=1):
-        session.add(
-            EstudianteModel(
-                codigo=estudiante.id,
-                nombre=estudiante.nombre,
-                dni=str(90000000 + numero),
+    if not session.scalar(select(func.count()).select_from(EstudianteModel)):
+        for numero, estudiante in enumerate(estudiantes, start=1):
+            session.add(
+                EstudianteModel(
+                    codigo=estudiante.id,
+                    nombre=estudiante.nombre,
+                    dni=str(90000000 + numero),
+                )
             )
-        )
-    session.commit()
-    repo = RepositorioCalificacionesSQLAlchemy(session)
-    for estudiante in estudiantes:
-        repo.guardar(Calificacion(estudiante.id, "C1", 1, 14, "U2"))
-        repo.guardar(Calificacion(estudiante.id, "C2", 1, 16, "U3"))
+        session.commit()
+
+    if not session.scalar(select(func.count()).select_from(CalificacionModel)):
+        repo = RepositorioCalificacionesSQLAlchemy(session)
+        for estudiante in estudiantes:
+            repo.guardar(Calificacion(estudiante.id, "C1", 1, 14, "U2"))
+            repo.guardar(Calificacion(estudiante.id, "C2", 1, 16, "U3"))
 
 
 def crear_servicios_demo():
