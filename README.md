@@ -39,3 +39,7 @@ pytest --cov=src --cov-report=term-missing --cov-fail-under=70
 
 GitHub Flow: `main` protegida, ramas `feature/*`, `fix/*`, `docs/*`, Pull Request con CI en
 verde y Conventional Commits (`test:` → `feat:` → `refactor:` por cada ciclo TDD).
+
+## Base de datos local
+
+La aplicación crea `escolar.db` en la carpeta del proyecto al primer arranque. `create_all()` solo crea tablas nuevas; no modifica tablas existentes. Si el esquema cambia (nuevas columnas) y aparece un error `no such column`, borra `escolar.db` y vuelve a ejecutar la aplicación. Las migraciones formales (Alembic) quedan como mejora futura.
