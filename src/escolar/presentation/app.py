@@ -12,6 +12,7 @@ from escolar.domain.entities import (
     Usuario,
 )
 from escolar.domain.errors import ErrorDeDominio
+from escolar.domain.notas import parsear_nota
 from escolar.domain.seguridad import hash_password
 from escolar.infrastructure.repositorios_memoria import (
     RepositorioAsistenciaMemoria,
@@ -1404,12 +1405,26 @@ class AplicacionEscolar(ctk.CTk):
                 weight=1,
             )
 
+        barra_botones = ctk.CTkFrame(formulario, fg_color="transparent")
+        barra_botones.pack(anchor="e", padx=20, pady=(5, 17))
+
         self.crear_boton(
-            formulario,
+            barra_botones,
             "GUARDAR CALIFICACIÓN",
             self.guardar_calificacion,
             ancho=220,
-        ).pack(anchor="e", padx=20, pady=(5, 17))
+        ).pack(side="right", padx=(10, 0))
+
+        self.crear_boton(
+            barra_botones,
+            "LIMPIAR",
+            self.limpiar_formulario,
+            color=COLOR["muted"],
+            ancho=120,
+        ).pack(side="right")
+
+    def limpiar_formulario(self):
+        self.entrada_nota.delete(0, "end")
 
     def guardar_calificacion(self):
         if self.sesion.usuario.rol is not Rol.DOCENTE:
@@ -1432,7 +1447,7 @@ class AplicacionEscolar(ctk.CTk):
             if not texto:
                 raise ValueError("Debes ingresar una nota.")
 
-            nota = float(texto.replace(",", "."))
+            nota = parsear_nota(texto)
 
             self.servicios["registrar_calificacion"].ejecutar(
                 self.sesion.usuario,
@@ -1445,7 +1460,8 @@ class AplicacionEscolar(ctk.CTk):
             self.alerta(
                 "exito",
                 "Calificación registrada",
-                "La calificación se guardó correctamente.",
+                "La calificación se guardó. "
+                "Si te equivocaste, corrígela con el botón Editar del historial.",
             )
 
             self.navegar("calificaciones")
@@ -1502,12 +1518,8 @@ class AplicacionEscolar(ctk.CTk):
             pady=(0, 15),
         )
 
-        encabezados = [
-            ("ESTUDIANTE", 0.34),
-            ("CURSO", 0.28),
-            ("PERIODO", 0.18),
-            ("NOTA", 0.20),
-        ]
+        anchos = [0.31, 0.25, 0.15, 0.14]
+        encabezados = list(zip(["ESTUDIANTE", "CURSO", "PERIODO", "NOTA"], anchos, strict=True))
 
         self.crear_fila_tabla(
             tabla,
@@ -1523,7 +1535,7 @@ class AplicacionEscolar(ctk.CTk):
             ).pack(pady=25)
             return
 
-        for calificacion in calificaciones:
+        for calificacion in reversed(calificaciones):
             estudiante = self.servicios["estudiantes"].obtener(calificacion.estudiante_id)
 
             curso = self.servicios["cursos"].obtener(calificacion.curso_id)
@@ -1540,7 +1552,7 @@ class AplicacionEscolar(ctk.CTk):
                 list(
                     zip(
                         valores,
-                        [0.31, 0.25, 0.15, 0.14],
+                        anchos,
                         strict=True,
                     )
                 ),
@@ -1549,12 +1561,12 @@ class AplicacionEscolar(ctk.CTk):
                 ctk.CTkButton(
                     fila,
                     text="Editar",
-                    width=72,
-                    height=30,
+                    width=90,
+                    height=32,
                     corner_radius=8,
                     fg_color=COLOR["primary"],
                     hover_color=COLOR["primary_hover"],
-                    font=(FONT, 10, "bold"),
+                    font=(FONT, 11, "bold"),
                     command=lambda item=calificacion: self.editar_calificacion(item),
                 ).pack(side="right", padx=8, pady=5)
 
@@ -1599,7 +1611,7 @@ class AplicacionEscolar(ctk.CTk):
 
         def guardar_cambios():
             try:
-                nota = float(entrada.get().strip().replace(",", "."))
+                nota = parsear_nota(entrada.get())
                 self.servicios["registrar_calificacion"].ejecutar(
                     self.sesion.usuario,
                     calificacion.estudiante_id,
@@ -1612,8 +1624,8 @@ class AplicacionEscolar(ctk.CTk):
                     "exito", "Calificación actualizada", "Los cambios se guardaron correctamente."
                 )
                 self.navegar("calificaciones")
-            except ValueError:
-                self.alerta("error", "Nota inválida", "Ingresa una nota numérica entre 0 y 20.")
+            except ValueError as error:
+                self.alerta("error", "Nota inválida", str(error))
             except ErrorDeDominio as error:
                 self.alerta("error", "No se pudo actualizar", str(error))
 
