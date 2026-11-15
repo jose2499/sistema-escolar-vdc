@@ -12,6 +12,7 @@ from escolar.domain.entities import (
     Usuario,
 )
 from escolar.domain.errors import ErrorDeDominio
+from escolar.domain.notas import parsear_nota
 from escolar.domain.seguridad import hash_password
 from escolar.infrastructure.repositorios_memoria import (
     RepositorioAsistenciaMemoria,
@@ -1432,7 +1433,7 @@ class AplicacionEscolar(ctk.CTk):
             if not texto:
                 raise ValueError("Debes ingresar una nota.")
 
-            nota = float(texto.replace(",", "."))
+            nota = parsear_nota(texto)
 
             self.servicios["registrar_calificacion"].ejecutar(
                 self.sesion.usuario,
@@ -1599,7 +1600,7 @@ class AplicacionEscolar(ctk.CTk):
 
         def guardar_cambios():
             try:
-                nota = float(entrada.get().strip().replace(",", "."))
+                nota = parsear_nota(entrada.get())
                 self.servicios["registrar_calificacion"].ejecutar(
                     self.sesion.usuario,
                     calificacion.estudiante_id,
@@ -1612,8 +1613,8 @@ class AplicacionEscolar(ctk.CTk):
                     "exito", "Calificación actualizada", "Los cambios se guardaron correctamente."
                 )
                 self.navegar("calificaciones")
-            except ValueError:
-                self.alerta("error", "Nota inválida", "Ingresa una nota numérica entre 0 y 20.")
+            except ValueError as error:
+                self.alerta("error", "Nota inválida", str(error))
             except ErrorDeDominio as error:
                 self.alerta("error", "No se pudo actualizar", str(error))
 
