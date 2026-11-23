@@ -16,6 +16,7 @@ from escolar.domain.entities import (
 from escolar.domain.errors import ErrorDeDominio
 from escolar.domain.notas import parsear_nota
 from escolar.domain.seguridad import hash_password
+from escolar.infrastructure.configuracion import obtener_url_bd
 from escolar.infrastructure.models import Base, CalificacionModel, EstudianteModel
 from escolar.infrastructure.repositorios_memoria import (
     RepositorioAsistenciaMemoria,
@@ -67,7 +68,7 @@ FONT = "Segoe UI"
 # SERVICIOS DE DEMOSTRACIÓN
 # =========================================================
 
-URL_BD = "sqlite:///escolar.db"
+URL_BD = obtener_url_bd()
 
 
 def crear_sesion_bd(url=URL_BD):
