@@ -1,0 +1,5 @@
+services:
+  pruebas:
+    build: .
+    command: pytest
+    profiles: ["pruebas"]
