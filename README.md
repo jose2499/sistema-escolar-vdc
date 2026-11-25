@@ -43,3 +43,17 @@ verde y Conventional Commits (`test:` → `feat:` → `refactor:` por cada ciclo
 ## Base de datos local
 
 La aplicación crea `escolar.db` en la carpeta del proyecto al primer arranque. `create_all()` solo crea tablas nuevas; no modifica tablas existentes. Si el esquema cambia (nuevas columnas) y aparece un error `no such column`, borra `escolar.db` y vuelve a ejecutar la aplicación. Las migraciones formales (Alembic) quedan como mejora futura.
+
+
+## Cómo ejecutar con Docker
+
+Requisito: Docker Desktop iniciado.
+
+1. Clonar el repositorio: `git clone https://github.com/jose2499/sistema-escolar-vdc.git`
+2. Ejecutar las pruebas dentro del contenedor:
+   `docker compose --profile pruebas run --rm pruebas`
+3. Ejecutar la aplicación (la ventana se abre en tu PC, no en el contenedor; PowerShell):
+   `$env:PYTHONPATH="src"; python -m escolar.presentation.app`
+4. Apagar contenedores: `docker compose down`
+
+Las pruebas usan una base en memoria y no modifican `escolar.db`.
