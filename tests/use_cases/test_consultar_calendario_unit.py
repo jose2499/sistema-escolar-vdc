@@ -1,4 +1,5 @@
-﻿import pytest
+import pytest
+
 from escolar.use_cases.consultar_calendario import consultar_calendario_academico
 
 

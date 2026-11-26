@@ -1,5 +1,6 @@
-﻿import pytest
+import pytest
 from pytest_bdd import given, parsers, scenarios, then, when
+
 from escolar.use_cases.consultar_calendario import consultar_calendario_academico
 
 scenarios("features/consultar_calendario.feature")
