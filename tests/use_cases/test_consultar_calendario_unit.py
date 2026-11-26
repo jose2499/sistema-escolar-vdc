@@ -1,5 +1,5 @@
-import pytest
-from src.escolar.use_cases.consultar_calendario import consultar_calendario_academico
+﻿import pytest
+from escolar.use_cases.consultar_calendario import consultar_calendario_academico
 
 
 def test_consultar_calendario_periodo_valido():
