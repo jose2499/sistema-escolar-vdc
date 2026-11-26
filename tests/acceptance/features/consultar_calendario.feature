@@ -1,4 +1,4 @@
-﻿Feature: Consultar calendario academico (PBI-09)
+Feature: Consultar calendario academico (PBI-09)
   Como estudiante del colegio
   quiero consultar el calendario academico del periodo
   para visualizar las fechas programadas de examenes y actividades
